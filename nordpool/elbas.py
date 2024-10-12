@@ -1,9 +1,7 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
-from socket import timeout
 import requests
-from datetime import date, datetime, timedelta
-from dateutil.parser import parse as parse_dt
+from datetime import timedelta
 from .base import Base, CurrencyMismatch
 
 
@@ -89,18 +87,11 @@ class Prices(Base):
             'areas': areas_data
         }
 
-    def _fetch_json(self, data_type, areas, end_date=None):
+    def _fetch_json(self, data_type, areas):
         ''' Fetch JSON from API '''
-        # If end_date isn't set, default to tomorrow
-        if end_date is None:
-            end_date = date.today() - timedelta(days=1)
-        # If end_date isn't a date or datetime object, try to parse a string
-        if not isinstance(end_date, date) and not isinstance(end_date, datetime):
-            end_date = parse_dt(end_date)
         # Create request to API
         r = requests.get(self.API_URL % data_type, params={
             'currency': self.currency,
-            'endDate': end_date.strftime('%d-%m-%Y'),
             'entityName': ''.join(areas),
         }, timeout=self.timeout)
         # Return JSON response
@@ -126,7 +117,7 @@ class Prices(Base):
                 - list of values (dictionary with start and endtime and value)
                 - possible other values, such as min, max, average for hourly
         '''
-        return self._parse_json(self._fetch_json(data_type, areas, end_date), columns, areas)
+        return self._parse_json(self._fetch_json(data_type, areas), columns, areas)
 
     def hourly(self, end_date=None, areas=[], columns=['Product', 'High', 'Low', 'Last', 'Avg', 'Volume']):
         ''' Helper to fetch hourly data, see Prices.fetch() '''
