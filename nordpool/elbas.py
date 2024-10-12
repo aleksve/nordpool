@@ -97,7 +97,7 @@ class Prices(Base):
         # Return JSON response
         return r.json()
 
-    def fetch(self, data_type, columns, end_date=None, areas=[]):
+    def fetch(self, data_type, columns, areas=[]):
         '''
         Fetch data from API.
         Inputs:
@@ -119,6 +119,6 @@ class Prices(Base):
         '''
         return self._parse_json(self._fetch_json(data_type, areas), columns, areas)
 
-    def hourly(self, end_date=None, areas=[], columns=['Product', 'High', 'Low', 'Last', 'Avg', 'Volume']):
+    def hourly(self, areas=[], columns=['Product', 'High', 'Low', 'Last', 'Avg', 'Volume']):
         ''' Helper to fetch hourly data, see Prices.fetch() '''
-        return self.fetch(self.HOURLY, columns, end_date, areas)
+        return self.fetch(self.HOURLY, columns, areas)
