@@ -11,7 +11,7 @@ prices_spot = elspot.Prices()
 prices_bas = elbas.Prices()
 
 # Fetch hourly Elspot prices for Finland and print the resulting dictionary
-pprint(prices_spot.hourly(areas=['FI']))
+pprint(prices_spot.hourly(areas=['Oslo']))
 
 # Fetch hourly Elbas prices for Finland and print the resulting dictionary
-pprint(prices_bas.hourly(areas=['FI']))
+pprint(prices_bas.hourly(areas=['NO1']))
